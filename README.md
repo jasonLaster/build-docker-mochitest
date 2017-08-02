@@ -11,3 +11,9 @@
 First login with `docker login`, then run:
 
 `make publish`
+
+
+#### Volumes
+
+
+docker run -ti -v $HOME/src/mozilla/build-docker-mochitest/firefox/:/firefox jasonlaster11/local-mc6
