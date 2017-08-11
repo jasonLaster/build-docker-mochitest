@@ -1,6 +1,6 @@
 
 build:
-	docker build -t jasonlaster11/local-mc6 .
+	docker build -t jasonlaster11/local-mc7 .
 
 publish:
-	docker push jasonlaster11/local-mc5
+	docker push jasonlaster11/local-mc7

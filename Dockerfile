@@ -47,8 +47,15 @@ RUN apt-get update -qq \
 
 ENV SHELL /bin/bash
 
-# Pull down m-c and add a simple mozconfig
-# We'll be able to update the m-c repo at runtime
-# ADD update-mc /
-# RUN  /update-mc
+RUN hg clone https://hg.mozilla.org/mozilla-central/ firefox
 WORKDIR /firefox
+
+RUN echo " \
+    ac_add_options --enable-artifact-builds\n \
+    mk_add_options MOZ_OBJDIR=./objdir-frontend\n \
+" > .mozconfig
+
+RUN ./mach configure
+
+RUN ./mach clobber python
+RUN ./mach clobber
