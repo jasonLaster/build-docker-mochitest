@@ -37,6 +37,7 @@ RUN apt-get update -qq \
   ocaml \
   libelf-dev \
   python-software-properties \
+  && easy_install -U mercurial \
   && wget -O bootstrap.py https://hg.mozilla.org/mozilla-central/raw-file/default/python/mozboot/bin/bootstrap.py \
   && python bootstrap.py --no-interactive --application-choice=browser \
   && curl -sSL https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
@@ -47,7 +48,8 @@ RUN apt-get update -qq \
 
 ENV SHELL /bin/bash
 
-RUN hg clone https://hg.mozilla.org/mozilla-central/ firefox
+# RUN hg clone https://hg.mozilla.org/mozilla-central/ firefox
+ADD firefox /firefox
 WORKDIR /firefox
 
 RUN echo " \
@@ -55,7 +57,10 @@ RUN echo " \
     mk_add_options MOZ_OBJDIR=./objdir-frontend\n \
 " > .mozconfig
 
-RUN ./mach configure
+RUN echo "source /root/.cargo/env" >>  .bash_profile
+RUN source .bash_profile
 
-RUN ./mach clobber python
-RUN ./mach clobber
+RUN ./mach bootstrap --application-choice browser_artifact_mode --no-interactive \
+  && ./mach configure \
+  && ./mach clobber python \
+  && ./mach clobber
