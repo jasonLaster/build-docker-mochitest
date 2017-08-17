@@ -58,7 +58,7 @@ RUN echo " \
 " > .mozconfig
 
 RUN echo "source /root/.cargo/env" >>  .bash_profile
-RUN source .bash_profile
+RUN ["/bin/bash", "-c", "source .bash_profile"]
 
 RUN ./mach bootstrap --application-choice browser_artifact_mode --no-interactive \
   && ./mach configure \
