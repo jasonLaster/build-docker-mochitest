@@ -57,10 +57,12 @@ RUN echo " \
     mk_add_options MOZ_OBJDIR=./objdir-frontend\n \
 " > .mozconfig
 
+
+RUN ./mach bootstrap --application-choice browser_artifact_mode --no-interactive ; exit 0
 RUN echo "source /root/.cargo/env" >>  .bash_profile
 RUN ["/bin/bash", "-c", "source .bash_profile"]
-
-RUN ./mach bootstrap --application-choice browser_artifact_mode --no-interactive \
-  && ./mach configure \
+RUN ./mach bootstrap --application-choice browser_artifact_mode --no-interactive 
+   
+RUN ./mach configure \
   && ./mach clobber python \
   && ./mach clobber
